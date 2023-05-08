@@ -93,7 +93,7 @@ workflows:
           port-definition: "8000:8000"
           after-push:
             - cosign/install:
-                cosign-version: v2.0.2
+                cosign-version: v2.0.1
             - run:
                 name: Confirm Docker registry credentials are configured and correct
                 command: |
@@ -167,11 +167,14 @@ jobs:
             op inject -i ./chart/docker-config.json.tpl -o ./chart/docker-config.json
       - run:
           name: Deploy via Helm
+          echo ${DOCKER_PASSWORD} | docker login -u ${DOCKER_LOGIN} --password-stdin << pipeline.parameters.registry >>
+            cp /home/circleci/.docker/config.json ./chart/docker-config.json
           command: |
             helm upgrade \
             --install \
             --namespace lab-system-mtls \
             --values deployment/values-<< parameters.environment >>.yaml \
+            --set image.tag=dev.${CIRCLE_SHA1:0:7} \
             --cleanup-on-fail \
             --atomic \
             five-lab-basic-bot \
