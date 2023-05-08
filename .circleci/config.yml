@@ -170,7 +170,7 @@ jobs:
           command: |
             helm upgrade \
             --install \
-            --namespace lab-system \
+            --namespace lab-system-mtls \
             --values deployment/values-<< parameters.environment >>.yaml \
             --set image.tag=dev.${CIRCLE_SHA1:0:7} \
             --cleanup-on-fail \
