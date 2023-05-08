@@ -31,7 +31,7 @@ spec:
     - name: "root"
       match:
         - uri:
-            prefix: "/v1/echo"
+            prefix: ""
       route:
         - destination:
             host: {{ include "five-lab-basic-bot.fullname" . }}
