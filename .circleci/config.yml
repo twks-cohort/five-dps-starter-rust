@@ -118,11 +118,11 @@ workflows:
                 name: Sign oci image and store signature to registry
                 command: |
                   cosign sign -y --key cosign.key \
-                      << pipeline.parameters.registry >>/one-lab-basic-bot:dev.${CIRCLE_SHA1:0:7}
+                      << pipeline.parameters.registry >>/five-lab-basic-bot:dev.${CIRCLE_SHA1:0:7}
             - run:
                 name: verify signature using public key
                 command: |
-                  cosign verify --key cosign.pub << pipeline.parameters.registry >>/one-lab-basic-bot:dev.${CIRCLE_SHA1:0:7}
+                  cosign verify --key cosign.pub << pipeline.parameters.registry >>/five-lab-basic-bot:dev.${CIRCLE_SHA1:0:7}
           filters: *on-push-main
 
   development-deploy-wip:
@@ -170,7 +170,7 @@ jobs:
           command: |
             helm upgrade \
             --install \
-            --namespace team-one<< parameters.environment >> \
+            --namespace team-five<< parameters.environment >> \
             --values deployment/values-<< parameters.environment >>.yaml \
             --cleanup-on-fail \
             --atomic \

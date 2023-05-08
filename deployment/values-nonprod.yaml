@@ -1,5 +1,5 @@
 ---
 hosts:
-  - five-lab-basic-bot.nonprod-us-east-2.cdicohorts-five.com
+  - five-lab-basic-bot.nonprod-us-east-2.cohortscdi-five.com
 gateways:
-  - istio-system/nonprod-us-east-2-cdicohorts-five-com-gateway
+  - istio-system/nonprod-us-east-2-cohortscdi-five-com-gateway
