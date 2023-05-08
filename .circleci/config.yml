@@ -92,8 +92,9 @@ workflows:
           snyk-organization: twdps
           port-definition: "8000:8000"
           after-push:
-            - cosign/install
-                      - run:
+            - cosign/install:
+                cosign-version: v2.0.2
+            - run:
                 name: Confirm Docker registry credentials are configured and correct
                 command: |
                   echo 'write to .docker/config.json is secure in ephemeral runtime environment'
