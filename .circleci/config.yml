@@ -170,7 +170,7 @@ jobs:
           command: |
             helm upgrade \
             --install \
-            --namespace lab-system-mtls \
+            --namespace lab-system \
             --values deployment/values-<< parameters.environment >>.yaml \
             --cleanup-on-fail \
             five-lab-basic-bot \
