@@ -93,10 +93,35 @@ workflows:
           port-definition: "8000:8000"
           after-push:
             - cosign/install
-            - cosign/sign:
-                registry: << pipeline.parameters.registry >>
-                image: five-lab-basic-bot
-                tag: dev.${CIRCLE_SHA1:0:7}
+                      - run:
+                name: Confirm Docker registry credentials are configured and correct
+                command: |
+                  echo 'write to .docker/config.json is secure in ephemeral runtime environment'
+                  echo ${DOCKER_PASSWORD} | docker login -u ${DOCKER_LOGIN} --password-stdin << pipeline.parameters.registry >>
+            - run:
+                name: Confirm signing parameters are set; key path, COSIGN_PASSWORD
+                command: |
+                  if [ ! -f cosign.key ]; then
+                    echo "signing key not available; not able to sign image."
+                    exit 1
+                  fi
+                  if [ ! -f cosign.pub ]; then
+                    echo "verification key not available; not able to validate signing process."
+                    exit 1
+                  fi
+                  if [ ! ${COSIGN_PASSWORD-} ]; then
+                    echo "signing key passphrase is not available; not able to sign image."
+                    exit 1
+                  fi
+            - run:
+                name: Sign oci image and store signature to registry
+                command: |
+                  cosign sign -y --key cosign.key \
+                      << pipeline.parameters.registry >>/five-lab-basic-bot:dev.${CIRCLE_SHA1:0:7}
+            - run:
+                name: verify signature using public key
+                command: |
+                  cosign verify --key cosign.pub << pipeline.parameters.registry >>/five-lab-basic-bot:dev.${CIRCLE_SHA1:0:7}
           filters: *on-push-main
 
   development-deploy-wip:
