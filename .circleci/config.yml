@@ -136,12 +136,17 @@ jobs:
       - set-kubeconfig:
           cluster: << parameters.cluster >>
       - run:
+          name: Inject Docker config
+          command: |
+            op inject -i ./chart/docker-config.json.tpl -o ./chart/docker-config.json
+      - run:
           name: Deploy via Helm
           command: |
             helm upgrade \
             --install \
-            --namespace team-five-<< parameters.environment >> \
+            --namespace lab-system \
             --values deployment/values-<< parameters.environment >>.yaml \
+            --set image.tag=dev.${CIRCLE_SHA1:0:7} \
             --cleanup-on-fail \
             --atomic \
             five-lab-basic-bot \
