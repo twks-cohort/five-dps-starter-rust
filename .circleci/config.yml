@@ -14,7 +14,7 @@ parameters:
   context:
     description: circleci context for all jobs
     type: string
-    default: twdps-core-labs-team
+    default: cohorts
   shell-options:
     description: shell options for all jobs
     type: string
@@ -105,7 +105,7 @@ workflows:
           context: << pipeline.parameters.context >>
           shell:  op run --env-file op.nonprod.env -- /bin/bash -eo pipefail
           name: Deploy to Dev Namespace
-          cluster: prod-us-east-1
+          cluster: nonprod-us-east-2
           environment: dev
           source-env: op.nonprod.env
 
@@ -140,7 +140,7 @@ jobs:
           command: |
             helm upgrade \
             --install \
-            --namespace twdps-core-labs-team-<< parameters.environment >> \
+            --namespace team_five-<< parameters.environment >> \
             --values deployment/values-<< parameters.environment >>.yaml \
             --cleanup-on-fail \
             --atomic \
