@@ -170,7 +170,7 @@ jobs:
           command: |
             helm upgrade \
             --install \
-            --namespace team-six-<< parameters.environment >> \
+            --namespace team-five-<< parameters.environment >> \
             --values deployment/values-<< parameters.environment >>.yaml \
             --cleanup-on-fail \
             --atomic \
