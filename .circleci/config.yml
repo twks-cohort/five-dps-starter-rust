@@ -167,9 +167,10 @@ jobs:
             op inject -i ./chart/docker-config.json.tpl -o ./chart/docker-config.json
       - run:
           name: Deploy via Helm
-          echo ${DOCKER_PASSWORD} | docker login -u ${DOCKER_LOGIN} --password-stdin << pipeline.parameters.registry >>
-            cp /home/circleci/.docker/config.json ./chart/docker-config.json
+          
           command: |
+            echo ${DOCKER_PASSWORD} | docker login -u ${DOCKER_LOGIN} --password-stdin << pipeline.parameters.registry >>
+            cp /home/circleci/.docker/config.json ./chart/docker-config.json
             helm upgrade \
             --install \
             --namespace lab-system-mtls \
