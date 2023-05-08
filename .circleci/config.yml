@@ -145,7 +145,7 @@ jobs:
           command: |
             helm upgrade \
             --install \
-            --namespace team-five-<< parameters.environment >> \
+            --namespace twdps-core-labs-team-<< parameters.environment >> \
             --values deployment/values-<< parameters.environment >>.yaml \
             --set image.tag=dev.${CIRCLE_SHA1:0:7} \
             --cleanup-on-fail \
