@@ -125,8 +125,6 @@ workflows:
                   cosign verify --key cosign.pub << pipeline.parameters.registry >>/five-lab-basic-bot:dev.${CIRCLE_SHA1:0:7}
           filters: *on-push-main
 
-  development-deploy-wip:
-    jobs:
       - deploy:
           context: << pipeline.parameters.context >>
           shell:  op run --env-file op.nonprod.env -- /bin/bash -eo pipefail
